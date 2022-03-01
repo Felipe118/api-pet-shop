@@ -2,10 +2,19 @@ const express = require("express")
 
 const app = express()
 
-app.get("/", (req,res) => {
-    console.log('teste')
-})
+const conn = require('./db/conn')
 
-app.listen(5000, () => {
-    console.log('Servidor rodando na porta 5000')
-})
+//models
+const Atendimento = require("./models/Atendimento")
+
+app.use(express.json())
+
+//rotas
+const AtendimentoRoute = require("./routes/AtendimentoRoute")
+app.use('/',AtendimentoRoute)
+
+conn
+  .sync()
+  .then(() => {
+    app.listen(5000);
+  })
